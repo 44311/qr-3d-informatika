@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR 3D Informatika</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main class="shell">
+  <div class="topbar">
+    <div class="brand">QR 3D • Informatika</div>
+    <a class="btn" href="qr.html?model=cpu">Generator QR</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">GitHub Pages • Rp0</div>
+    <h1>Scan QR, lalu lihat objek 3D.</h1>
+    <p class="lead">Pilih objek di bawah. Setiap objek punya halaman viewer 3D dan QR sendiri. Setelah project ini dipasang di GitHub Pages, alamat QR otomatis mengikuti URL website kamu.</p>
+  </section>
+
+  <section id="cards" class="grid"></section>
+
+  <div class="footer">Model 3D contoh dibuat khusus untuk project ini. Kamu bisa mengganti file .glb di folder <b>models</b> dengan model milikmu sendiri.</div>
+</main>
+<script src="assets/models.js"></script>
+<script>
+const cards = document.getElementById('cards');
+Object.entries(window.MODELS).forEach(([id,m])=>{
+  const el=document.createElement('article');
+  el.className='card';
+  el.innerHTML=`<div class="badge">3D MODEL</div><h2>${m.name}</h2><p>${m.desc}</p>
+    <div class="actions">
+      <a class="btn primary" href="viewer.html?model=${encodeURIComponent(id)}">Lihat 3D</a>
+      <a class="btn" href="qr.html?model=${encodeURIComponent(id)}">QR Code</a>
+    </div>`;
+  cards.appendChild(el);
+});
+</script>
+</body>
+</html>

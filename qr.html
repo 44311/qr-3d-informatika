@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Model 3D</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="topbar">
+    <a class="brand" href="index.html">← QR 3D</a>
+    <a id="openViewer" class="btn primary" href="#">Buka 3D</a>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">QR otomatis</div>
+    <h1 id="title">QR Model 3D</h1>
+    <p class="lead">QR di bawah otomatis mengarah ke viewer pada alamat GitHub Pages tempat project ini sedang dibuka.</p>
+  </section>
+
+  <section class="qr-wrap">
+    <div class="qr-box">
+      <div id="qrcode" aria-label="QR Code"></div>
+      <button id="download" class="btn primary" style="width:100%;margin-top:14px" type="button">Download QR PNG</button>
+    </div>
+    <div class="card">
+      <h2>Alamat yang masuk ke QR</h2>
+      <div id="url" class="code"></div>
+      <p class="small">Setelah website sudah aktif di GitHub Pages, buka halaman QR ini dari website tersebut lalu download QR-nya. Jangan download QR saat masih membuka file dari komputer lokal.</p>
+      <p class="small"><b>Cara pakai:</b> cetak/tempel QR → scan dengan kamera HP → browser membuka viewer → model 3D bisa diputar dan di-zoom.</p>
+    </div>
+  </section>
+</main>
+
+<script src="assets/models.js"></script>
+<script>
+const p=new URLSearchParams(location.search);
+const id=p.get('model') || 'cpu';
+const model=window.MODELS[id] || window.MODELS.cpu;
+const viewerUrl=new URL('viewer.html',location.href);
+viewerUrl.search='?model='+encodeURIComponent(id);
+document.title='QR '+model.name;
+document.getElementById('title').textContent='QR • '+model.name;
+document.getElementById('url').textContent=viewerUrl.href;
+document.getElementById('openViewer').href=viewerUrl.href;
+
+const qrRoot=document.getElementById('qrcode');
+new QRCode(qrRoot,{
+  text:viewerUrl.href,
+  width:256,
+  height:256,
+  correctLevel:QRCode.CorrectLevel.H
+});
+
+document.getElementById('download').addEventListener('click',()=>{
+  const canvas=qrRoot.querySelector('canvas');
+  const img=qrRoot.querySelector('img');
+  let href='';
+  if(canvas) href=canvas.toDataURL('image/png');
+  else if(img) href=img.src;
+  if(!href){ alert('QR belum siap.'); return; }
+  const a=document.createElement('a');
+  a.href=href;
+  a.download='QR-'+id+'.png';
+  document.body.appendChild(a); a.click(); a.remove();
+});
+</script>
+</body>
+</html>

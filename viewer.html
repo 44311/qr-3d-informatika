@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Viewer 3D</title>
+<link rel="stylesheet" href="assets/style.css">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+</head>
+<body>
+<main class="shell">
+  <div class="topbar">
+    <a class="brand" href="index.html">← QR 3D</a>
+    <a id="qrBtn" class="btn" href="#">QR objek ini</a>
+  </div>
+
+  <section class="viewer-card">
+    <model-viewer id="viewer"
+      camera-controls
+      touch-action="pan-y"
+      auto-rotate
+      rotation-per-second="18deg"
+      shadow-intensity="1"
+      exposure="1"
+      interaction-prompt="auto"
+      alt="Model 3D">
+    </model-viewer>
+    <div class="viewer-meta">
+      <div>
+        <div class="badge">INTERAKTIF 3D</div>
+        <h1 id="name" style="font-size:30px;margin:8px 0 0">Memuat…</h1>
+        <p id="desc">Geser dengan satu jari untuk memutar. Cubit untuk zoom.</p>
+      </div>
+      <a id="back" class="btn" href="index.html">Pilih objek lain</a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/models.js"></script>
+<script>
+const p=new URLSearchParams(location.search);
+const id=p.get('model') || 'cpu';
+const model=window.MODELS[id] || window.MODELS.cpu;
+document.title=model.name+' • Viewer 3D';
+document.getElementById('name').textContent=model.name;
+document.getElementById('desc').textContent=model.desc+' Geser untuk memutar, cubit untuk zoom.';
+document.getElementById('viewer').setAttribute('src',model.file);
+document.getElementById('viewer').setAttribute('alt','Model 3D '+model.name);
+document.getElementById('qrBtn').href='qr.html?model='+encodeURIComponent(id);
+</script>
+</body>
+</html>
